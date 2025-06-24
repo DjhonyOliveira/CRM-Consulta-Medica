@@ -12,8 +12,8 @@ export default class ExternoMedicos{
     }
 
     selecionar = (rowElement) => {
-        const medicoId   = rowElement.dataset.id;
-        const medicoNome = rowElement.dataset.nome;
+        let medicoId   = rowElement.dataset.id;
+        let medicoNome = rowElement.dataset.nome;
 
         if(!medicoId && !medicoNome){
             return;

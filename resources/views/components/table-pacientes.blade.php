@@ -1,4 +1,4 @@
-<div>
+<div class="mr-2">
     <table class="min-w-full table-auto border border-gray-200 text-sm">
         <thead class="bg-gray-100 text-left">
             <tr>
@@ -8,7 +8,9 @@
         </thead>
         <tbody>
             @forelse ($pacientes as $paciente)
-                <tr class="hover:bg-gray-50">
+                <tr class="hover:bg-gray-50" onclick="selecionarPaciente(this)"
+                    data-id="{{ $paciente->id }}"
+                    data-nome="{{ $paciente->name }}">
                     <td class="px-3 py-2 border">{{ $paciente->name }}</td>
                     <td class="px-3 py-2 border">{{ $paciente->email }}</td>
                 </tr>

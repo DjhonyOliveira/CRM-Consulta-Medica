@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\EnumAcao;
+use App\Models\ModelEspecialidade;
+use App\Models\User;
 use App\UserTypes;
 use Livewire\Component;
 
@@ -22,7 +24,9 @@ class ModalConsulta extends Component
 
     public function render()
     {
-        return view('livewire.modal-consulta');
+        return view('livewire.modal-consulta', [
+            "medico" => User::find( auth()->user()->id)->especialidades
+        ]);
     }
 
     public function openModal()

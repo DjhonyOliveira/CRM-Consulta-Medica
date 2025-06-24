@@ -70,39 +70,43 @@
                     @method($method)
 
                     <div class="px-4 py-4">
-                        <!-- Médico -->
-                        <label class="block text-sm font-medium text-gray-700">Médico</label>
-                        <p class="text-red-600 text-sm mt-1 error-message" data-field="medico_id"></p>
-                        <div class="flex items-center space-x-2 mb-3">
-                            <input type="text" id="medico_nome" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" readonly placeholder="Selecione um médico">
-                            <input type="hidden" id="medico_id" name="medico_id">
-                            <button type="button" class="btn btn-outline ml-2" onclick="abrirModalExterno()"> 🔍 </button>
-                        </div>
+                        @if(!auth()->user()->isMedico())
+                            <label class="block text-sm font-medium text-gray-700">Médico</label>
+                            <p class="text-red-600 text-sm mt-1 error-message" data-field="medico_id"></p>
+                            <div class="flex items-center space-x-2 mb-3">
+                                <input type="text" id="medico_nome" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" readonly placeholder="Selecione um médico">
+                                <button type="button" class="btn btn-outline ml-2" onclick="abrirModalExternoMedico()"> 🔍 </button>
+                            </div>
+                        @endif
+                        <input value="{{ auth()->user()->isMedico() ? auth()->user()->id : '' }}" type="hidden" id="medico_id" name="medico_id">
 
-                        <!-- Especialidade -->
                         <label class="block text-sm font-medium text-gray-700">Especialidade</label>
                         <p class="text-red-600 text-sm mt-1 error-message" data-field="especialidade_id"></p>
                         <select name="especialidade_id" id="especialidade_id" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-3" onchange="especialidadeSelecionada()">
                             <option value="">Selecione</option>
+                            @if(auth()->user()->isMedico())
+                                @foreach($medico as $especialidade)
+                                    <option value="{{ $especialidade->id }}">{{ $especialidade->nome }}</option>
+                                @endforeach
+                            @endif
                         </select>
 
-                        <!-- Horário -->
                         <label class="block text-sm font-medium text-gray-700">Horário</label>
                         <p class="text-red-600 text-sm mt-1 error-message" data-field="horario_id"></p>
                         <select name="horario_id" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-3">
-                            
                         </select>
 
-                        <!-- Paciente -->
-                        <label class="block text-sm font-medium text-gray-700">Paciente</label>
-                        <p class="text-red-600 text-sm mt-1 error-message" data-field="paciente_id"></p>
-                        <select name="paciente_id" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-3">
-                            @foreach ($pacientes as $paciente)
-                                <option value="{{ $paciente->id }}">{{ $paciente->nome }}</option>
-                            @endforeach
-                        </select>
+                        @if(!auth()->user()->isAdmin())
+                            <label class="block text-sm font-medium text-gray-700">Paciente</label>
+                            <p class="text-red-600 text-sm mt-1 error-message" data-field="paciente_id"></p>
+                            <div class="flex items-center space-x-2 mb-3">
+                                <input type="text" id="paciente_nome" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" readonly placeholder="Selecione um Paciente">
+                                <input type="hidden" id="paciente_id" name="paciente_id">
+                                <button type="button" class="btn btn-outline ml-2" onclick="abrirModalExternoPaciente()"> 🔍 </button>
+                            </div>
+                        @endif
 
-                        <!-- Valor -->
+
                         <label class="block text-sm font-medium text-gray-700">Valor</label>
                         <input type="text" id="valor" name="valor" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-3" readonly>
                     </div>
