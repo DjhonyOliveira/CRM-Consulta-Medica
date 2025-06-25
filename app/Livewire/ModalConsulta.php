@@ -3,16 +3,16 @@
 namespace App\Livewire;
 
 use App\EnumAcao;
-use App\Models\ModelEspecialidade;
+use App\Models\ModelConsulta;
+use App\Models\ModelHorariosDisponiveis;
 use App\Models\User;
-use App\UserTypes;
 use Livewire\Component;
 
 class ModalConsulta extends Component
 {
 
     protected $listeners = [
-        "openModalFromJson"    => "openModalFromJson"
+        "openModalFromJson" => "openModalFromJson"
     ];
 
     public $showModal = false;
@@ -21,6 +21,7 @@ class ModalConsulta extends Component
     public $method;
     public $horarios = [];
     public $pacientes = [];
+    public $consulta;
 
     public function render()
     {
@@ -62,6 +63,17 @@ class ModalConsulta extends Component
 
     public function add($data = [])
     {
+        $this->consulta = [
+            'id'             => '',
+            'medico_id'      => '',
+            'medico_nome'    => '',
+            'horario_id'     => '',
+            'paciente_id'    => '',
+            'paciente_nome'  => '',
+            'valor'          => '',
+            'especialidade'  => '',
+            'especialidades' => '',
+        ];
 
         $this->openModal();
         $this->actionName       = 'Adicionar';
@@ -71,6 +83,8 @@ class ModalConsulta extends Component
 
     private function delete($data = [])
     {
+        $this->getConsultaPersistida($data);
+
         $this->openModal();
         $this->actionName = 'Deletar';
         $this->method     = 'DELETE';
@@ -79,6 +93,8 @@ class ModalConsulta extends Component
 
     private function update($data = [])
     {
+        $this->getConsultaPersistida($data);
+
         $this->openModal();
         $this->actionName       = 'Atualizar';
         $this->method           = 'PUT';
@@ -87,9 +103,52 @@ class ModalConsulta extends Component
 
     private function view($data = [])
     {
+        $this->getConsultaPersistida($data);
+
         $this->openModal();
         $this->actionName       = 'Visualizar';
         $this->method           = 'GET';
         $this->action           = EnumAcao::view->value;
     }
+
+    private function getConsultaPersistida($data)
+    {
+        $idConsulta     = $data['id'][0];
+        $oModelConsulta = ModelConsulta::find($idConsulta);
+
+        if($oModelConsulta){
+            $aConsulta = [
+                'id'             => $oModelConsulta->id,
+                'medico_id'      => $oModelConsulta->medico_id,
+                'medico_nome'    => $oModelConsulta->medico->name,
+                'horario_id'     => $oModelConsulta->horario_id,
+                'paciente_id'    => $oModelConsulta->paciente_id,
+                'paciente_nome'  => $oModelConsulta->paciente->name,
+                'valor'          => "R$: {$oModelConsulta->valor}",
+                'especialidade'  => $oModelConsulta->especialidade_id,
+                'especialidades' => User::find( $oModelConsulta->medico_id)->especialidades,
+                'horarios'       => ModelHorariosDisponiveis::where('medico_id', $oModelConsulta->medico_id)
+                                                            ->where('especialidade_id', $oModelConsulta->especialidade_id)
+                                                            ->where('disponivel', true)->get()
+                                                            ->union(ModelHorariosDisponiveis::where('id', $oModelConsulta->horario_id)->get()),
+            ];
+
+            $this->consulta = $aConsulta;
+
+            return;
+        }
+
+        $this->consulta = [
+            'id'             => '',
+            'medico_id'      => '',
+            'medico_nome'    => '',
+            'horario_id'     => '',
+            'paciente_id'    => '',
+            'paciente_nome'  => '',
+            'valor'          => '',
+            'especialidade'  => '',
+            'especialidades' => '',
+        ];
+    }
+
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\ModelConsulta;
 use App\Models\ModelHorariosDisponiveis;
 use App\Models\ModelValorConsulta;
-use Exception;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -61,6 +60,8 @@ class ControllerConsulta extends Controller
         }
 
         if($oModelConsulta->save()){
+            (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta);
+
             return response()->json([
                 "message" => "Consulta inserida com sucesso",
             ]);
@@ -72,14 +73,106 @@ class ControllerConsulta extends Controller
         ], 404);
     }
 
-    public function update()
+    public function update(Request $request)
     {
+        $request->validate([
+            'id'               => "required|integer",
+            'paciente_id'      => "integer",
+            'medico_id'        => "integer",
+            'especialidade_id' => "integer",
+            'horario_id'       => "integer",
+            'valor'            => "string",
+        ]);
 
+        $oModelConsulta = ModelConsulta::find($request->id);
+
+        if(!$request->filled('medico_id')){
+            if(auth()->user()->isMedico()){
+                $oModelConsulta->medico_id = auth()->user()->id;
+            }
+            else{
+                return response()->json([
+                    "message" => "É obrigatório a seleção de um médico",
+                    "type"    => "error",
+                ], 404);
+            }
+        }
+        else{
+            $oModelConsulta->medico_id = $request->medico_id;
+        }
+
+        if(!$request->filled('paciente_id')){
+            if(auth()->user()->isPaciente()){
+                $oModelConsulta->paciente_id = auth()->user()->id;
+            }
+            else{
+                return response()->json([
+                    "message" => "É obrigatório informar um paciente para a consulta",
+                ], 404);
+            }
+        }
+        else{
+            $oModelConsulta->paciente_id = $request->paciente_id;
+        }
+
+        if($request->filled('especialidade_id')){
+            $oModelConsulta->especialidade_id = $request->especialidade_id;
+        }
+
+        if($request->filled('horario_id')){
+            $oModelConsulta->horario_id = $request->horario_id;
+        }
+
+        if($request->filled('valor')){
+            $oModelConsulta->valor = $request->valor;
+        }
+
+        if($oModelConsulta->save()){
+            (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta);
+
+            return response()->json([
+                "message" => "Dados Alterados com sucesso",
+            ]);
+        }
+
+        return response()->json([
+            "message" => "Erro ao atualizar os dados, tente novamente",
+            "type"    => "error",
+        ]);
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
+        $request->validate([
+            'id' => "required|integer",
+        ]);
 
+        $oModelConsulta = ModelConsulta::find($request->id);
+
+        if($oModelConsulta){
+            $idHorarioConsultaDeletada = $oModelConsulta->horario_id; 
+
+            if($oModelConsulta->delete()){
+                $oModelConsulta = new ModelConsulta();
+                $oModelConsulta->horario_id = $idHorarioConsultaDeletada;
+
+                (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta, true);
+
+                return response()->json([
+                    "message" => "Consulta deletada com sucesso"
+                ]);
+            }
+
+            return response()->json([
+                "message" => "não foi possivel deletar a consulta",
+                "type"    => "error"
+            ], 404);
+        }
+
+        return response()->json([
+            "message" => "Não foi possivel localizar a consulta a ser deletada, tente novamente",
+            "type"    => "error",
+        ], 404);
     }
 
     /**
@@ -139,7 +232,6 @@ class ControllerConsulta extends Controller
      */
     private function trataValorDecimal(string $sValor): float
     {
-        /** Tratamos o valor para a inserção no banco */
         $valorLimpo   = str_replace(['', 'R$:', ' '], '', $sValor);
         $valorDecimal = str_replace(',', '.', $valorLimpo);
 

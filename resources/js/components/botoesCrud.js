@@ -1,7 +1,7 @@
 function botoesCrud() {
     let buttonsCrud = document.querySelectorAll('.btn-crud');
-    let checkboxes  = document.querySelectorAll('.user-checkbox');
-    let linhas        = document.querySelectorAll('tr[data-row-selectable]');
+    let checkboxes  = document.querySelectorAll('.table-checkbox');
+    let linhas      = document.querySelectorAll('tr[data-row-selectable]');
 
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener('change', () => {
@@ -19,7 +19,7 @@ function botoesCrud() {
                 return;
             }
 
-            const checkbox = linha.querySelector('.user-checkbox');
+            const checkbox = linha.querySelector('.table-checkbox');
 
             if(!checkbox){
                 return;
@@ -40,7 +40,7 @@ function botoesCrud() {
     buttonsCrud.forEach((button) => {
         button.addEventListener('click', () => {
             let acao = parseInt(button.getAttribute('data-acao'));
-            let checkbox = document.querySelectorAll('.user-checkbox:checked') ?? [];
+            let checkbox = document.querySelectorAll('.table-checkbox:checked') ?? [];
             let selecionados = Array.from(checkbox).map(check => check.value);
 
             if (acao !== ACAO_ADICIONAR && selecionados.length === 0) {

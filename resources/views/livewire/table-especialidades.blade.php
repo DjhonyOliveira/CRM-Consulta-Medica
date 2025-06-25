@@ -12,7 +12,7 @@
             @forelse ($especialidades as $especialidade)
                 <tr data-row-selectable class="hover:bg-gray-50">
                     <td class="px-3 py-2 border">
-                        <input type="checkbox" class="user-checkbox" value="{{ $especialidade->id }}">
+                        <input type="checkbox" class="table-checkbox" value="{{ $especialidade->id }}">
                     </td>
                     <td class="px-3 py-2 border">{{ $especialidade->nome }}</td>
                 </tr>

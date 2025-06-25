@@ -13,7 +13,7 @@
             @foreach($valorConsulta as $consulta)
                 <tr data-row-selectable class="hover:bg-gray-50">
                     <td class="px-3 py-2 border">
-                        <input type="checkbox" class="user-checkbox" value="{{ $consulta->id }}">
+                        <input type="checkbox" class="table-checkbox" value="{{ $consulta->id }}">
                     </td>
                     <td class="px-3 py-2 border">{{ $consulta->especialidade->nome ?? 'N/A' }}</td>
                     <td class="px-3 py-2 border">R$ {{ number_format($consulta->valor, 2, ',', '.') }}</td>

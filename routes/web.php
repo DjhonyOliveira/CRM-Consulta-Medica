@@ -20,9 +20,9 @@ Route::aliasMiddleware('checkMedico', \App\Http\Middleware\CheckMedico::class);
 Route::aliasMiddleware('checkAdmin', \App\Http\Middleware\CheckAdmin::class);
 Route::aliasMiddleware('checkMedicoAdmin', \App\Http\Middleware\CheckAdminMedico::class);
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 /**
  * Rotas para retorno de informações para tratamento via ajax
@@ -41,7 +41,7 @@ Route::get('consultas/valor', [ControllerConsulta::class, 'valorConsulta']);
 /**
  * Rota dashboard
  */
-Route::get('/', function () {
+Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

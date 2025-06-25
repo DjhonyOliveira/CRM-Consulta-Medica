@@ -14,7 +14,7 @@
             @forelse ($usuarios as $usuario)
                 <tr data-row-selectable class="hover:bg-gray-50">
                     <td class="px-3 py-2 border">
-                        <input type="checkbox" class="user-checkbox" value="{{ $usuario->id }}">
+                        <input type="checkbox" class="table-checkbox" value="{{ $usuario->id }}">
                     </td>
                     <td class="px-3 py-2 border">{{ $usuario->name }}</td>
                     <td class="px-3 py-2 border">{{ $usuario->email }}</td>

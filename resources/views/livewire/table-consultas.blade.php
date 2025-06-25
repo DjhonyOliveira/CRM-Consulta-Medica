@@ -22,23 +22,23 @@ use App\EnumConsulta;
         </thead>
         <tbody>
             @foreach($consultas as $consulta)
-            <tr class="hover:bg-gray-50">
-                <td>
-                    <input class="ml-3" type="checkbox" value="{{ $consulta->id }}">
-                </td>
-                <td class="px-3 py-2 border">{{ $consulta->paciente->name ?? '-' }}</td>
-                <td class="px-3 py-2 border">{{ $consulta->medico->name ?? '-' }}</td>
-                <td class="px-3 py-2 border">{{ $consulta->especialidade->nome ?? '-' }}</td>
-                <td class="px-3 py-2 border">{{ \Carbon\Carbon::parse($consulta->horario->data)->format('d/m/Y') ?? '-' }}</td>
-                <td class="px-3 py-2 border">
-                    {{ \Carbon\Carbon::parse($consulta->horario->inicio ?? '')->format('H:i') ?? '-' }}
-                    -
-                    {{ \Carbon\Carbon::parse($consulta->horario->fim ?? '')->format('H:i') ?? '-' }}
-                </td>
-                <td class="px-3 py-2 border">R$ {{ number_format($consulta->valor, 2, ',', '.') }}</td>
-                <td class="px-3 py-2 border">{{ EnumConsulta::from($consulta->status)->statusConsulta() }}</td>
-            </tr>
-        @endforeach
+                <tr data-row-selectable class="hover:bg-gray-50">
+                    <td>
+                        <input class="ml-3 table-checkbox" type="checkbox" value="{{ $consulta->id }}">
+                    </td>
+                    <td class="px-3 py-2 border">{{ $consulta->paciente->name ?? '-' }}</td>
+                    <td class="px-3 py-2 border">{{ $consulta->medico->name ?? '-' }}</td>
+                    <td class="px-3 py-2 border">{{ $consulta->especialidade->nome ?? '-' }}</td>
+                    <td class="px-3 py-2 border">{{ \Carbon\Carbon::parse($consulta->horario->data)->format('d/m/Y') ?? '-' }}</td>
+                    <td class="px-3 py-2 border">
+                        {{ \Carbon\Carbon::parse($consulta->horario->inicio ?? '')->format('H:i') ?? '-' }}
+                        -
+                        {{ \Carbon\Carbon::parse($consulta->horario->fim ?? '')->format('H:i') ?? '-' }}
+                    </td>
+                    <td class="px-3 py-2 border">R$ {{ number_format($consulta->valor, 2, ',', '.') }}</td>
+                    <td class="px-3 py-2 border">{{ EnumConsulta::from($consulta->status)->statusConsulta() }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
