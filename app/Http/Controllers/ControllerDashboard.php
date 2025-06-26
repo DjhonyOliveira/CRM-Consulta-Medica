@@ -16,8 +16,7 @@ class ControllerDashboard extends Controller
 {
     public function dashboardMedico()
     {
-        $userId = auth()->id();
-        $teste = today();
+        $userId = auth()->user()->id;
 
         $consultasHoje = DB::table('consulta')
                         ->join('horarios_disponiveis', 'consulta.horario_id', '=', 'horarios_disponiveis.id')
@@ -58,7 +57,7 @@ class ControllerDashboard extends Controller
 
     public function dashboardPaciente()
     {
-        $userId = auth()->id();
+        $userId = auth()->user()->id;
 
         $consultasFuturas = ModelConsulta::where('paciente_id', $userId)
             ->whereHas('horario', fn($q) => $q->where('inicio', '>', now()))
