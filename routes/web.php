@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ControllerConsulta;
+use App\Http\Controllers\ControllerDashboard;
 use App\Http\Controllers\EspecialidadeController;
 use App\Http\Controllers\ValorConsultaController;
 use App\Http\Controllers\MedicoEspecialidade;
@@ -42,8 +43,21 @@ Route::get('consultas/valor', [ControllerConsulta::class, 'valorConsulta']);
  * Rota dashboard
  */
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = auth()->user();
+
+    return match($user->type_user){
+        1 => redirect()->route('dashboard.paciente'),
+        2 => redirect()->route('dashboard.medico'),
+        3 => redirect()->route('dashboard.admin'),
+        default => abort(403),
+    };
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard/medico', [ControllerDashboard::class, 'dashboardMedico'])->name('dashboard.medico');
+    Route::get('/dashboard/paciente', [ControllerDashboard::class, 'dashboardPaciente'])->name('dashboard.paciente');
+    Route::get('/dashboard/admin', [ControllerDashboard::class, 'dashboardAdmin'])->name('dashboard.admin');
+});
 
 /**
  * Rota padrão breeze referente a usuários
