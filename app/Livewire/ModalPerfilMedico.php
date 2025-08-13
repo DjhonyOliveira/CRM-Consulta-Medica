@@ -12,7 +12,8 @@ use Livewire\Component;
 class ModalPerfilMedico extends Component
 {
     protected $listeners = [
-        "openModalFromJson" => "openModalFromJson"
+        "openModalFromJson"    => "openModalFromJson",
+        "atualizacaoRealizada" => "resetarEstado"
     ];
 
     public $showModal;
@@ -143,6 +144,13 @@ class ModalPerfilMedico extends Component
         }
 
         $this->horario = [];
+    }
+
+    public function resetarEstado()
+    {
+        if($this->action != EnumAcao::create->value){
+            $this->closeModal();
+        }
     }
 
 }

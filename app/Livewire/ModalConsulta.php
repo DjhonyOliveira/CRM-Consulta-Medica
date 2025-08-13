@@ -12,7 +12,8 @@ class ModalConsulta extends Component
 {
 
     protected $listeners = [
-        "openModalFromJson" => "openModalFromJson"
+        "openModalFromJson"    => "openModalFromJson",
+        "atualizacaoRealizada" => "resetarEstado"
     ];
 
     public $showModal = false;
@@ -149,6 +150,13 @@ class ModalConsulta extends Component
             'especialidade'  => '',
             'especialidades' => '',
         ];
+    }
+
+    public function resetarEstado()
+    {
+        if($this->action != EnumAcao::create->value){
+            $this->closeModal();
+        }
     }
 
 }

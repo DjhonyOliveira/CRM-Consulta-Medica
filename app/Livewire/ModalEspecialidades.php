@@ -9,7 +9,8 @@ use Livewire\Component;
 class ModalEspecialidades extends Component
 {
     protected $listeners = [
-        "openModalFromJson" => "openModalFromJson",
+        "openModalFromJson"    => "openModalFromJson",
+        "atualizacaoRealizada" => "resetarEstado"
     ];
 
     public $showModal;
@@ -115,8 +116,12 @@ class ModalEspecialidades extends Component
         ];
     }
 
-    private function resetaEstado()
+    public function resetarEstado()
     {
+        if($this->action != EnumAcao::create->value){
+            $this->closeModal();
+        }
+
         $this->reset(['especialidade']);
     }
 }

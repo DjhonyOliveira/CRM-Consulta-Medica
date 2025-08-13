@@ -132,6 +132,10 @@ class ModalUsuario extends Component
 
     public function resetarEstado()
     {
+        if($this->action != EnumAcao::create->value){
+            $this->closeModal();
+        }
+
         $this->reset(['usuario']);
     }
 

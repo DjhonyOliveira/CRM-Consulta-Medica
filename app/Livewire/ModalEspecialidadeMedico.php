@@ -120,4 +120,11 @@ class ModalEspecialidadeMedico extends Component
 
         $this->especialidadeSelecionada = [];
     }
+
+    public function resetarEstado()
+    {
+        if($this->action != EnumAcao::create->value){
+            $this->closeModal();
+        }
+    }
 }

@@ -10,7 +10,8 @@ use App\EnumAcao;
 class ModalValorConsulta extends Component
 {
     protected $listeners = [
-        "openModalFromJson" => "openModalFromJson"
+        "openModalFromJson"    => "openModalFromJson",
+        "atualizacaoRealizada" => "resetarEstado"
     ];
 
     public $showModal;
@@ -137,6 +138,13 @@ class ModalValorConsulta extends Component
         }
 
         $this->valoresConsulta = [];
+    }
+
+    public function resetarEstado()
+    {
+        if($this->action != EnumAcao::create->value){
+            $this->closeModal();
+        }
     }
 
 }
