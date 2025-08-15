@@ -28,11 +28,11 @@ class ControllerConsulta extends Controller
         $oModelConsulta = new ModelConsulta();
         $oModelConsulta->especialidade_id = $request->especialidade_id;
         $oModelConsulta->horario_id       = $request->horario_id;
-        $oModelConsulta->valor            = $this->trataValorDecimal($request->valor);
+        $oModelConsulta->valor            = trataValorDecimal($request->valor);
 
         if(!$request->filled('medico_id')){
-            if(auth()->user()->isMedico()){
-                $oModelConsulta->medico_id = auth()->user()->id;
+            if($this->getUsuarioLogado()->isMedico()){
+                $oModelConsulta->medico_id = $this->getUsuarioLogado()->id;
             }
             else{
                 return response()->json([
@@ -46,8 +46,8 @@ class ControllerConsulta extends Controller
         }
 
         if(!$request->filled('paciente_id')){
-            if(auth()->user()->isPaciente()){
-                $oModelConsulta->paciente_id = auth()->user()->id;
+            if($this->getUsuarioLogado()->isPaciente()){
+                $oModelConsulta->paciente_id = $this->getUsuarioLogado()->id;;
             }
             else{
                 return response()->json([
@@ -60,17 +60,13 @@ class ControllerConsulta extends Controller
         }
 
         if($oModelConsulta->save()){
-            (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta);
+            $oModelHorariosDisponiveis = new ModelHorariosDisponiveis();
+            $oModelHorariosDisponiveis->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta);
 
-            return response()->json([
-                "message" => "Consulta inserida com sucesso",
-            ]);
+            return $this->getMensagemInsercaoOk();
         }
 
-        return response()->json([
-            "message" => "Erro ao cadastrar a consulta",
-            "type"    => "error",
-        ], 404);
+        return $this->getMessageInsercaoError();
     }
 
     public function update(Request $request)
@@ -87,8 +83,8 @@ class ControllerConsulta extends Controller
         $oModelConsulta = ModelConsulta::find($request->id);
 
         if(!$request->filled('medico_id')){
-            if(auth()->user()->isMedico()){
-                $oModelConsulta->medico_id = auth()->user()->id;
+            if($this->getUsuarioLogado()->isMedico()){
+                $oModelConsulta->medico_id = $this->getUsuarioLogado()->id;;
             }
             else{
                 return response()->json([
@@ -102,8 +98,8 @@ class ControllerConsulta extends Controller
         }
 
         if(!$request->filled('paciente_id')){
-            if(auth()->user()->isPaciente()){
-                $oModelConsulta->paciente_id = auth()->user()->id;
+            if($this->getUsuarioLogado()->isPaciente()){
+                $oModelConsulta->paciente_id = $this->getUsuarioLogado()->id;;
             }
             else{
                 return response()->json([
@@ -130,15 +126,10 @@ class ControllerConsulta extends Controller
         if($oModelConsulta->save()){
             (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta);
 
-            return response()->json([
-                "message" => "Dados Alterados com sucesso",
-            ]);
+            return $this->getMessageAlteracaoSucesso();
         }
 
-        return response()->json([
-            "message" => "Erro ao atualizar os dados, tente novamente",
-            "type"    => "error",
-        ]);
+        return $this->getMessageAlteracaoError();
     }
 
     public function delete(Request $request)
@@ -158,15 +149,10 @@ class ControllerConsulta extends Controller
 
                 (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta, true);
 
-                return response()->json([
-                    "message" => "Consulta deletada com sucesso"
-                ]);
+                return $this->getMessageDeleteSucesso();
             }
 
-            return response()->json([
-                "message" => "não foi possivel deletar a consulta",
-                "type"    => "error"
-            ], 404);
+            return $this->getMessageDeleteError();
         }
 
         return response()->json([
@@ -200,7 +186,7 @@ class ControllerConsulta extends Controller
 
     /**
      * Retorna os horários disponiveis de consulta por médico e especialidade. (Requisição Ajax)
-     * @return void
+     * @return mixed
      */
     public function getHorariosDisponiveisByMedico($idMedico, $idEspecialidade)
     {
@@ -223,19 +209,6 @@ class ControllerConsulta extends Controller
         }
 
         return response()->json($aHorarios);
-    }
-
-    /**
-     * Realiza o tratamento de um valor string para float
-     * @param string $sValor
-     * @return float
-     */
-    private function trataValorDecimal(string $sValor): float
-    {
-        $valorLimpo   = str_replace(['', 'R$:', ' '], '', $sValor);
-        $valorDecimal = str_replace(',', '.', $valorLimpo);
-
-        return (float) $valorDecimal;
     }
 
 }

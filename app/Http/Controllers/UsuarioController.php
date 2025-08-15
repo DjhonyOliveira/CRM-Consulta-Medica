@@ -32,14 +32,10 @@ class UsuarioController extends Controller
         $pessoa->type_user = $request->type_user;
 
         if($pessoa->save()){
-            return response()->json([
-                "message" => "Usuário inserido com sucesso!"
-            ]);
+            return $this->getMensagemInsercaoOk();
         }
 
-        return response()->json([
-            "message" => "Erro ao inserir o usuário, tente novamente!"
-        ], 404);
+        return $this->getMessageInsercaoError();
     }
 
     public function update(Request $request)
@@ -68,14 +64,10 @@ class UsuarioController extends Controller
         }
 
         if($oModelUser->save()){
-            return response()->json([
-                "message" => "Usuário alterado com sucesso!",
-            ]);
+            return $this->getMessageAlteracaoSucesso();
         }
 
-        return response()->json([
-            "message" => "Erro ao atualizar o usuário, tente novamente",
-        ], 404);
+        return $this->getMessageAlteracaoError();
     }
 
     public function delete(Request $request)
@@ -84,14 +76,10 @@ class UsuarioController extends Controller
         $oModelUser = User::find($idUsuario);
 
         if($oModelUser->delete()){
-            return response()->json([
-                "message" => "Usuário deletado com sucesso!",
-            ]);
+            return $this->getMessageDeleteSucesso();
         } 
         
-        return response()->json([
-            "message" => "Falha ao deletar o usuário, tente novamente mais tarde",
-        ], 404);
+        return $this->getMessageDeleteError();
     }
 
 }

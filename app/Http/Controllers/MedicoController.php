@@ -28,21 +28,17 @@ class MedicoController extends Controller
         $horaFim       = "{$request->data} {$request->hora_fim}";
 
         $oModelHorariosDisponiveis = $this->getModelHorariosDisponiveis();
-        $oModelHorariosDisponiveis->medico_id        = auth()->user()->id;
+        $oModelHorariosDisponiveis->medico_id        = $this->getUsuarioLogado()->id;
         $oModelHorariosDisponiveis->especialidade_id = $request->especialidade_id;
         $oModelHorariosDisponiveis->inicio           = $horaInicio;
         $oModelHorariosDisponiveis->fim              = $horaFim;
         $oModelHorariosDisponiveis->data             = $request->data;
 
         if($oModelHorariosDisponiveis->save()){
-            return response()->json([
-                "message" => "horário de atendimento inserido com sucesso"
-            ]);
+            return $this->getMensagemInsercaoOk();
         }
 
-        return response()->json([
-            "message" => "Erro ao registrar, tente novamente",
-        ], 404);
+        return $this->getMessageInsercaoError();
     }
 
     public function update(Request $request)
@@ -77,14 +73,10 @@ class MedicoController extends Controller
         }
 
         if($oModel->save()){
-            return response()->json([
-                "message" => "Dados alterados com sucesso"
-            ]);
+            return $this->getMessageAlteracaoSucesso();
         }
 
-        return response()->json([
-            "message" => "Erro ao atualizar os dados, tente novamente",
-        ], 404);
+        return $this->getMessageAlteracaoError();
     }
 
     public function delete(Request $request)
@@ -96,14 +88,10 @@ class MedicoController extends Controller
         $oModelPersistido = $this->getModelHorariosDisponiveis()->find($request->id);
 
         if($oModelPersistido->delete()){
-            return response()->json([
-                "message" => "Registro deletado com sucesso"
-            ]);
+            return $this->getMessageDeleteSucesso();
         }
 
-        return response()->json([
-            "message" => "Erro ao deletar o registro, tente novamente",
-        ], 404);
+        return $this->getMessageDeleteError();
     }
 
     /**

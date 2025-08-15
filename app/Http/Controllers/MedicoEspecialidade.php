@@ -20,7 +20,7 @@ class MedicoEspecialidade extends Controller
             "especialidade_id" => "required|integer"
         ]);
 
-        $userLogado = auth()->user();
+        $userLogado = $this->getUsuarioLogado();
 
         if(!$userLogado->isMedico()){
             return response()->json([
@@ -34,14 +34,10 @@ class MedicoEspecialidade extends Controller
         $oModelEspecialidadeMedico->especialidade_id = $request->especialidade_id;
 
         if($oModelEspecialidadeMedico->save()){
-            return response()->json([
-                "message" => "Especialidade inserida com sucesso para o médico " . $userLogado->name
-            ]);
+            return $this->getMensagemInsercaoOk();
         }
 
-        return response()->json([
-            "message" => "Falha ao registrar a especialidade, tente novamente"
-        ], 404);
+        return $this->getMessageInsercaoError();
     }
 
     public function delete(Request $request)
@@ -49,20 +45,16 @@ class MedicoEspecialidade extends Controller
         $idEspecialidade = $request->id;
 
         $medicoEspecialidade = DB::table('medico_especialidade')
-                                 ->where('medico_id', auth()->user()->id)
+                                 ->where('medico_id', $this->getUsuarioLogado())
                                  ->where('especialidade_id', $idEspecialidade);
 
         if($medicoEspecialidade){
             if($medicoEspecialidade->delete()){
-                return response()->json([
-                    "message" => "Especialidade removida com sucesso"
-                ]);
+                return $this->getMessageDeleteSucesso();
             }
         }
         
-        return response()->json([
-            "message" => "falha ao remover a especialidade, tente novamente!",
-        ], 404);
+        return $this->getMessageDeleteError();
     }
 
 }

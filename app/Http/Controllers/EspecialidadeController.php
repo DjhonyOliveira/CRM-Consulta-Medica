@@ -23,14 +23,10 @@ class EspecialidadeController extends Controller
         $oModelEspecialidade->nome = $request->nome;
 
         if($oModelEspecialidade->save()){
-            return response()->json([
-                "message" => "Especialidade inserida com sucesso!"
-            ]);
+            return $this->getMensagemInsercaoOk();
         }
 
-        response()->json([
-            "message" => "Falha ao inserir o registro, tente novamente."
-        ], 404);
+        return $this->getMessageInsercaoError();
     }
 
     public function update(Request $request)
@@ -43,14 +39,10 @@ class EspecialidadeController extends Controller
         }
 
         if($oModelEspecialidade->save()){
-            return response()->json([
-                "message" => "Especialidade alterada com sucesso!"
-            ]);
+            return $this->getMessageAlteracaoSucesso();
         }
 
-        return response()->json([
-            "message" => "Falha para atualizar o registro, tente novamente!",
-        ], 404);
+        return $this->getMessageAlteracaoError();
     }
 
     public function delete(Request $request)
@@ -66,14 +58,10 @@ class EspecialidadeController extends Controller
         }
 
         if($oModelEspecialidade->delete()){
-            return response()->json([
-                "message" => "Especialidade deletada com sucesso!",
-            ]);
+            return $this->getMessageDeleteSucesso();
         }
 
-        return response()->json([
-            "message" => "Falha ao deletar a especilidade, tente novamente!",
-        ], 404);
+        return $this->getMessageDeleteError();
     }
 
 }

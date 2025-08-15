@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\ModelMedicoEspecialidade;
 use App\Models\ModelValorConsulta;
-use Exception;
 use Illuminate\Http\Request;
 
 class ValorConsultaController extends Controller
@@ -31,18 +30,14 @@ class ValorConsultaController extends Controller
 
         $oModelValorConsulta = new ModelValorConsulta();
         $oModelValorConsulta->especialidade_id = $request->especialidade;
-        $oModelValorConsulta->medico_id        = auth()->user()->id;
+        $oModelValorConsulta->medico_id        = $this->getUsuarioLogado()->id;;
         $oModelValorConsulta->valor            = $request->valor;
 
         if($oModelValorConsulta->save()){
-            return response()->json([
-                "message" => "Valor da consulta salvo com sucesso!"
-            ]);
+            return $this->getMensagemInsercaoOk();
         }
 
-        return response()->json([
-            "message" => "Erro ao salvar o registro, tente novamente mais tarde",
-        ], 404);
+        return $this->getMessageInsercaoError();
     }
 
     public function update(Request $request)
@@ -71,14 +66,10 @@ class ValorConsultaController extends Controller
         }
 
         if($oModelValorConsulta->save()){
-            return response()->json([
-                "message" => "Valor da consulta alterado com sucesso!"
-            ]);
+            return $this->getMessageAlteracaoSucesso();
         }
 
-        return response()->json([
-            "message" => "Erro ao salvar o registro, tente novamente mais tarde"
-        ], 404);
+        return $this->getMessageAlteracaoError();
     }
 
     public function delete(Request $request)
@@ -90,13 +81,10 @@ class ValorConsultaController extends Controller
         $oModelValorConsulta = ModelValorConsulta::find($request->id);
 
         if($oModelValorConsulta->delete()){
-            return response()->json([
-                "message" => "Registro deletado com sucesso"
-            ]);
+            return $this->getMessageDeleteSucesso();
         }
 
-        return response()->json([
-            "message" => "Erro ao deletar o registro",
-        ], 404);
+        return $this->getMessageDeleteError();
     }
+
 }
