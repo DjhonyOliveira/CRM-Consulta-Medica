@@ -43,7 +43,7 @@ Route::get('consultas/valor', [ControllerConsulta::class, 'valorConsulta']);
  * Rota dashboard
  */
 Route::get('/dashboard', function () {
-    $user = auth()->user();
+    $user = getUsuarioLogado();
 
     return match($user->type_user){
         1 => redirect()->route('dashboard.paciente'),
