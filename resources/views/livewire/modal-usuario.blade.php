@@ -12,11 +12,11 @@
         @if($action == EnumAcao::delete->value && isset($usuario['id']))
             <div>
                 @livewire('components.modal-delete', [
-                        "showModalDelete"  => $showModal,
-                        "action"           => $action,
-                        "dados"            => $usuario,
-                        "nomeRotina"       => "Usuário",
-                        "actionRoute"      => "consulta.view"
+                        "showModalDelete" => $showModal,
+                        "action"          => $action,
+                        "dados"           => $usuario,
+                        "nomeRotina"      => "Usuário",
+                        "route"           => "usuario.store"
                     ])
             </div>
         @else 

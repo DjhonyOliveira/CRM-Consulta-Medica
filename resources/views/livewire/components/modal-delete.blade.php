@@ -19,7 +19,7 @@ use App\EnumAcao;
                 </button>
             </div>
 
-            <form id="formModal" action="{{ route('<?= $actionRoute; ?>') }}" method="POST">
+            <form id="formModal" action="{{ route($route) }}" method="POST">
                 @csrf
                 @method('delete')
 
