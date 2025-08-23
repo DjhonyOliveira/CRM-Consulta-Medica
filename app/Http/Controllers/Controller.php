@@ -17,7 +17,7 @@ abstract class Controller
      */
     protected function getUsuarioLogado()
     {
-        return auth()->user();
+        return getUsuarioLogado();
     }
 
     protected function getMensagemInsercaoOk()

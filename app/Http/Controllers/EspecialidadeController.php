@@ -20,7 +20,7 @@ class EspecialidadeController extends Controller
         ]);
 
         $oModelEspecialidade = new ModelEspecialidade();
-        $oModelEspecialidade->nome = $request->nome;
+        $oModelEspecialidade->setNome($request->nome);
 
         if($oModelEspecialidade->save()){
             return $this->getMensagemInsercaoOk();
@@ -35,7 +35,7 @@ class EspecialidadeController extends Controller
         $oModelEspecialidade = ModelEspecialidade::find($idEspecialidade);
 
         if($request->filled('nome')){
-            $oModelEspecialidade->nome = $request->nome;
+            $oModelEspecialidade->setNome($request->nome);
         }
 
         if($oModelEspecialidade->save()){

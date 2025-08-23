@@ -44,8 +44,52 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
+    }
+
+    public function getId()
+    {
+        return $this->attributes['id'];
+    }
+
+    public function getNome()
+    {
+        return $this->attributes['name'];
+    }
+
+    public function setNome(string $nome)
+    {
+        $this->attributes['name'] = $nome;
+
+        return $this;
+    }
+
+    public function getEmail()
+    {
+        return $this->attributes['email'];
+    }
+
+    public function setEmail(string $email)
+    {
+        $this->attributes['email'] = $email;
+    }
+
+    public function setSenha(string $senha)
+    {
+        $this->attributes['password'] = $senha;
+    }
+
+    public function getTipoUsuario()
+    {
+        return $this->attributes['type_user'];
+    }
+
+    public function setTipoUsuario(int $tipoUsuario)
+    {
+        $this->attributes['type_user'] = $tipoUsuario;
+
+        return $this;
     }
 
     /**
@@ -54,7 +98,7 @@ class User extends Authenticatable
      */
     public static function podeAlterarSenha(): bool
     {
-        $usuarioLogado = auth()->user();
+        $usuarioLogado = getUsuarioLogado();
 
         if($usuarioLogado->type_user == UserTypes::admin->value){
             return true;
@@ -70,11 +114,11 @@ class User extends Authenticatable
      */
     public static function podeAlterarUsuarioFromModelUser(User $oModel): bool
     {
-        if(auth()->user()->type_user == UserTypes::admin->value){
+        if(getUsuarioLogado()->type_user == UserTypes::admin->value){
             return true;
         }
 
-        if(auth()->user()->type_user == UserTypes::medico->value){
+        if(getUsuarioLogado()->type_user == UserTypes::medico->value){
             if($oModel->type_user == UserTypes::paciente->value){
                 return true;
             }

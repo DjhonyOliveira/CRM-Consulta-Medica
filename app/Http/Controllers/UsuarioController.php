@@ -26,10 +26,10 @@ class UsuarioController extends Controller
         ]);
 
         $pessoa = new User();
-        $pessoa->name      = $request->name;
-        $pessoa->email     = $request->email;
-        $pessoa->password  = Hash::make($request->password);
-        $pessoa->type_user = $request->type_user;
+        $pessoa->setNome($request->name);
+        $pessoa->setEmail($request->email);
+        $pessoa->setSenha(Hash::make($request->password));
+        $pessoa->setTipoUsuario($request->type_user);
 
         if($pessoa->save()){
             return $this->getMensagemInsercaoOk();
@@ -56,11 +56,11 @@ class UsuarioController extends Controller
         }
 
         if($request->filled('name')){
-            $oModelUser->name = $request->name;
+            $oModelUser->setNome($request->name);
         }
 
         if($request->filled('email')){
-            $oModelUser->email = $request->email;
+            $oModelUser->setEmail($request->email);
         }
 
         if($oModelUser->save()){

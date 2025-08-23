@@ -26,13 +26,13 @@ class ControllerConsulta extends Controller
         ]);
 
         $oModelConsulta = new ModelConsulta();
-        $oModelConsulta->especialidade_id = $request->especialidade_id;
-        $oModelConsulta->horario_id       = $request->horario_id;
-        $oModelConsulta->valor            = trataValorDecimal($request->valor);
+        $oModelConsulta->setEspecialidadeId($request->especialidade_id);
+        $oModelConsulta->setHorarioId($request->horario_id);
+        $oModelConsulta->setvalor(trataValorDecimal($request->valor));
 
         if(!$request->filled('medico_id')){
             if($this->getUsuarioLogado()->isMedico()){
-                $oModelConsulta->medico_id = $this->getUsuarioLogado()->id;
+                $oModelConsulta->setMedicoId($this->getUsuarioLogado()->id);
             }
             else{
                 return response()->json([
@@ -42,12 +42,12 @@ class ControllerConsulta extends Controller
             }
         }
         else{
-            $oModelConsulta->medico_id = $request->medico_id;
+            $oModelConsulta->setMedicoId($request->medico_id);
         }
 
         if(!$request->filled('paciente_id')){
             if($this->getUsuarioLogado()->isPaciente()){
-                $oModelConsulta->paciente_id = $this->getUsuarioLogado()->id;;
+                $oModelConsulta->setPacienteId($this->getUsuarioLogado()->id);
             }
             else{
                 return response()->json([
@@ -56,7 +56,7 @@ class ControllerConsulta extends Controller
             }
         }
         else{
-            $oModelConsulta->paciente_id = $request->paciente_id;
+            $oModelConsulta->setPacienteId($request->paciente_id);
         }
 
         if($oModelConsulta->save()){
@@ -84,7 +84,7 @@ class ControllerConsulta extends Controller
 
         if(!$request->filled('medico_id')){
             if($this->getUsuarioLogado()->isMedico()){
-                $oModelConsulta->medico_id = $this->getUsuarioLogado()->id;;
+                $oModelConsulta->setMedicoId($this->getUsuarioLogado()->id);
             }
             else{
                 return response()->json([
@@ -94,12 +94,12 @@ class ControllerConsulta extends Controller
             }
         }
         else{
-            $oModelConsulta->medico_id = $request->medico_id;
+            $oModelConsulta->setMedicoId($request->medico_id);
         }
 
         if(!$request->filled('paciente_id')){
             if($this->getUsuarioLogado()->isPaciente()){
-                $oModelConsulta->paciente_id = $this->getUsuarioLogado()->id;;
+                $oModelConsulta->setPacienteId($this->getUsuarioLogado()->id);
             }
             else{
                 return response()->json([
@@ -108,19 +108,19 @@ class ControllerConsulta extends Controller
             }
         }
         else{
-            $oModelConsulta->paciente_id = $request->paciente_id;
+            $oModelConsulta->setPacienteId($request->paciente_id);
         }
 
         if($request->filled('especialidade_id')){
-            $oModelConsulta->especialidade_id = $request->especialidade_id;
+            $oModelConsulta->setEspecialidadeId($request->especialidade_id);
         }
 
         if($request->filled('horario_id')){
-            $oModelConsulta->horario_id = $request->horario_id;
+            $oModelConsulta->setHorarioId($request->horario_id);
         }
 
         if($request->filled('valor')){
-            $oModelConsulta->valor = $request->valor;
+            $oModelConsulta->setValor($request->valor);
         }
 
         if($oModelConsulta->save()){
@@ -145,7 +145,7 @@ class ControllerConsulta extends Controller
 
             if($oModelConsulta->delete()){
                 $oModelConsulta = new ModelConsulta();
-                $oModelConsulta->horario_id = $idHorarioConsultaDeletada;
+                $oModelConsulta->setHorarioId($idHorarioConsultaDeletada);
 
                 (new ModelHorariosDisponiveis())->alteraStatusHorarioConsultaFromModelConsulta($oModelConsulta, true);
 
@@ -198,9 +198,9 @@ class ControllerConsulta extends Controller
         $aHorarios = [];
 
         foreach($oHorariosConsulta as $horario){
-            $horaInicio = Carbon::parse($horario->inicio)->format('H:i');
-            $horaFim    = Carbon::parse($horario->fim)->format('H:i');
-            $data       = Carbon::parse($horario->data)->format('d/m/Y');
+            $horaInicio = formataHorarioBr($horario->inicio);
+            $horaFim    = formataHorarioBr($horario->fim);
+            $data       = formataDataBr($horario->data);
 
             $aHorarios[] = [
                 'id'       => $horario->id,

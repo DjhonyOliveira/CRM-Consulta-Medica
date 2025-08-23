@@ -30,8 +30,8 @@ class MedicoEspecialidade extends Controller
         }
 
         $oModelEspecialidadeMedico = new ModelMedicoEspecialidade();
-        $oModelEspecialidadeMedico->medico_id        = $userLogado->id;
-        $oModelEspecialidadeMedico->especialidade_id = $request->especialidade_id;
+        $oModelEspecialidadeMedico->setMedicoId($userLogado->id);
+        $oModelEspecialidadeMedico->setEspecialidadeId($request->especialidade_id);
 
         if($oModelEspecialidadeMedico->save()){
             return $this->getMensagemInsercaoOk();

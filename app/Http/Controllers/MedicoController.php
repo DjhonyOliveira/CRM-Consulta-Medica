@@ -28,11 +28,11 @@ class MedicoController extends Controller
         $horaFim       = "{$request->data} {$request->hora_fim}";
 
         $oModelHorariosDisponiveis = $this->getModelHorariosDisponiveis();
-        $oModelHorariosDisponiveis->medico_id        = $this->getUsuarioLogado()->id;
-        $oModelHorariosDisponiveis->especialidade_id = $request->especialidade_id;
-        $oModelHorariosDisponiveis->inicio           = $horaInicio;
-        $oModelHorariosDisponiveis->fim              = $horaFim;
-        $oModelHorariosDisponiveis->data             = $request->data;
+        $oModelHorariosDisponiveis->setMedicoId($this->getUsuarioLogado()->id);
+        $oModelHorariosDisponiveis->setEspecialidadeId($request->especialidade_id);
+        $oModelHorariosDisponiveis->setInicio($horaInicio);
+        $oModelHorariosDisponiveis->setFim($horaFim);
+        $oModelHorariosDisponiveis->setData($request->data);
 
         if($oModelHorariosDisponiveis->save()){
             return $this->getMensagemInsercaoOk();
@@ -53,22 +53,22 @@ class MedicoController extends Controller
         $oModel = $this->getModelHorariosDisponiveis()->find($request->id);
 
         if($request->filled('data')){
-            $oModel->data = $request->data;
+            $oModel->setData($request->data);
         }
 
         if($request->filled('especialidade_id')){
-            $oModel->especialidade_id = $request->especialidade_id;
+            $oModel->setEspecialidadeId($request->especialidade_id);
         }       
 
         if($request->filled('hora_inicio')){
             if($request->filled('data')){
-                $oModel->inicio = "{$request->data} {$request->hora_inicio}";
+                $oModel->setInicio("{$request->data} {$request->hora_inicio}");
             }
         }
 
         if($request->filled('hora_fim')){
             if($request->filled('data')){
-                $oModel->fim = "{$request->data} {$request->hora_fim}";
+                $oModel->setFim("{$request->data} {$request->hora_fim}");
             }
         }
 

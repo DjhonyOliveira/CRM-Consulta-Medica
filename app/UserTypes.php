@@ -26,14 +26,14 @@ enum UserTypes: int
     public static function getArrayListaTipoPessoa($bMostraTodos = false): array
     {
         if(!$bMostraTodos){
-            if(auth()->user()->type_user == self::admin->value){
+            if(getUsuarioLogado()->type_user == self::admin->value){
                 return [
                     "Admin"    => self::admin->value,
                     "Médico"   => self::medico->value,
                     "Paciente" => self::paciente->value
                 ];
             }
-            else if(auth()->user()->type_user == self::medico->value){
+            else if(getUsuarioLogado()->type_user == self::medico->value){
                 return ["Paciente" => self::paciente->value];
             }
         }

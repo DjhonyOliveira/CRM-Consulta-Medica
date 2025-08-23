@@ -8,9 +8,7 @@ use App\Models\ModelHorariosDisponiveis;
 use App\Models\User;
 use App\UserTypes;
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class ControllerDashboard extends Controller
 {

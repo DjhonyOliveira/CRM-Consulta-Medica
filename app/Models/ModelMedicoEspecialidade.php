@@ -15,6 +15,42 @@ class ModelMedicoEspecialidade extends Pivot
         'especialidade_id',
     ];
 
+    public function getId()
+    {
+        return $this->attributes['id'];
+    }
+
+    public function setId(int $id)
+    {
+        $this->attributes['id'] = $id;
+
+        return $this;
+    }
+
+    public function getMedicoId()
+    {
+        return $this->attributes['medico_id'];
+    }
+
+    public function setMedicoId(int $medicoId)
+    {
+        $this->attributes['medico_id'] = $medicoId;
+
+        return $this;
+    }
+
+    public function getEspecialidadeId()
+    {
+        return $this->attributes['especialidade_id'];
+    }
+
+    public function setEspecialidadeId(int $especialidadeId)
+    {
+        $this->attributes['especialidade_id'] = $especialidadeId;
+
+        return $this;
+    }
+
     /**
      * Valida se o médico logado possui a especialidade informada
      * @param int $especialidade
@@ -22,7 +58,7 @@ class ModelMedicoEspecialidade extends Pivot
      */
     public static function validaMedicoEspecialidade(int $especialidade): bool
     {
-        $bExisteRelacionamento = self::where('medico_id', auth()->user()->id)
+        $bExisteRelacionamento = self::where('medico_id', getUsuarioLogado()->id)
                                      ->where('especialidade_id', $especialidade)
                                      ->exists();
 

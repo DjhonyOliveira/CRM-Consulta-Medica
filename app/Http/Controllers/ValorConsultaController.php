@@ -29,9 +29,9 @@ class ValorConsultaController extends Controller
         }
 
         $oModelValorConsulta = new ModelValorConsulta();
-        $oModelValorConsulta->especialidade_id = $request->especialidade;
-        $oModelValorConsulta->medico_id        = $this->getUsuarioLogado()->id;;
-        $oModelValorConsulta->valor            = $request->valor;
+        $oModelValorConsulta->setEspecialidadeId($request->especialidade);
+        $oModelValorConsulta->setMedicoId($this->getUsuarioLogado()->id);
+        $oModelValorConsulta->setValor($request->valor);
 
         if($oModelValorConsulta->save()){
             return $this->getMensagemInsercaoOk();
@@ -58,11 +58,11 @@ class ValorConsultaController extends Controller
         $oModelValorConsulta = ModelValorConsulta::find($request->id);
 
         if($request->filled('especialidade')){
-            $oModelValorConsulta->especialidade_id = $request->especialidade;
+            $oModelValorConsulta->setEspecialidadeId($request->especialidade);
         }
 
         if($request->filled('valor')){
-            $oModelValorConsulta->valor = $request->valor;
+            $oModelValorConsulta->setValor($request->valor);
         }
 
         if($oModelValorConsulta->save()){
