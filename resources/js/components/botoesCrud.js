@@ -44,7 +44,7 @@ function botoesCrud() {
             let selecionados = Array.from(checkbox).map(check => check.value);
 
             if (acao !== ACAO_ADICIONAR && selecionados.length === 0) {
-                alert('Selecione pelo menos uma opção na tela');
+                showBladeToast('Selecione pelo menos uma opção na tela', 'warning');;
 
                 return;
             }
