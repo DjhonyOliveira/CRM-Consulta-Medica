@@ -12,12 +12,12 @@ use Livewire\Component;
  */
 class ModalBase extends Component
 {
-    public string $title;
-    public string $method = 'POST';
-    public string $formAction;
-    public array $fields = [];
-    public int $action;
-    public bool $show;
+    public $title;
+    public $method = 'POST';
+    public $formAction;
+    public $fields = [];
+    public $action;
+    public $show;
 
     protected $listeners = [
         "atualizacaoRealizada" => "resetarEstado"
@@ -158,7 +158,7 @@ class ModalBase extends Component
             "fields"     => $this->getFields(),
             "action"     => $this->getAction(),
             "show"       => $this->getShow()
-        ])->render();
+        ]);
     }
 
     public function closeModal()

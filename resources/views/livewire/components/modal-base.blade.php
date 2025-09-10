@@ -11,7 +11,7 @@ use App\EnumAcao;
                 
                 <div class="flex justify-between items-center border-b pb-2 mb-4">
                     <h2 class="text-xl font-bold">{{ $title }}</h2>
-                    <button wire:click="close" class="bg-red-600 text-white w-8 h-8 rounded">&times;</button>
+                    <button wire:click="closeModal" class="bg-red-600 text-white w-8 h-8 rounded">&times;</button>
                 </div>
 
                 <form class="formModal" action="{{ $formAction }}" method="POST">

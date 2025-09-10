@@ -8,11 +8,11 @@ class Input extends Component
 {
 
     public $value;
-    public bool $readOnly = false;
-    public string $name;
-    public string $label;
-    public bool $required;
-    public string $type;
+    public $readOnly = false;
+    public $name;
+    public $label;
+    public $required;
+    public $type;
     protected $listeners = [
         "atualizacaoRealizada" => "resetarEstado"
     ];
@@ -160,4 +160,5 @@ class Input extends Component
         $this->required = true;
         $this->type     = '';
     }
+
 }
