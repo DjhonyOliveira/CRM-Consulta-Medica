@@ -1,5 +1,5 @@
 <?php
-    use App\EnumAcao;
+    use App\Enums\EnumAcao;
 ?>
 
 <div class="top-24 left-4 z-50 bg-white border border-gray-300 shadow-md px-4 py-2 flex gap-2">

@@ -11,19 +11,31 @@ use App\Http\Controllers\MedicoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 use App\Models\User;
-use App\UserTypes;
+use App\Enums\UserTypes;
+use App\Http\Controllers\ControllerScreen;
 
 use function PHPSTORM_META\map;
 
 App::setLocale('pt_BR');
 
+/**
+ * Carregamento dos middlewares de check
+ */
 Route::aliasMiddleware('checkMedico', \App\Http\Middleware\CheckMedico::class);
 Route::aliasMiddleware('checkAdmin', \App\Http\Middleware\CheckAdmin::class);
 Route::aliasMiddleware('checkMedicoAdmin', \App\Http\Middleware\CheckAdminMedico::class);
 
+/**
+ * Rota de tela inicial da aplicação (page de apresentação)
+ */
 Route::get('/', function () {
     return view('welcome');
 });
+
+/** 
+ * Rota de requisição para montagem das telas
+ */
+Route::get('/screen', [ControllerScreen::class, 'show']);
 
 /**
  * Rotas para retorno de informações para tratamento via ajax
@@ -37,7 +49,6 @@ Route::get('/components/toast', function () {
 
 Route::get('medicos/{id}/especialidades', [MedicoController::class, 'especialidades']);
 Route::get('consultas/valor', [ControllerConsulta::class, 'valorConsulta']);
-
 
 /**
  * Rota dashboard
@@ -147,9 +158,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
  */
 Route::middleware(['auth', 'checkAdmin'])->group(function(){
     Route::get   ('/especialidade', [EspecialidadeController::class, 'renderView'])->name('especialidade.view'  );
-    Route::post  ('/especialidade', [EspecialidadeController::class, 'create']    )->name('especialidade.create');
-    Route::put   ('/especialidade', [EspecialidadeController::class, 'renderView'])->name('especialidade.update');
-    Route::delete('/especialidade', [EspecialidadeController::class, 'delete']    )->name('especialidade.delete');
+    Route::post  ('/especialidade', [EspecialidadeController::class, 'create'])->name('especialidade.create');
+    Route::put   ('/especialidade', [EspecialidadeController::class, 'update'])->name('especialidade.update');
+    Route::delete('/especialidade', [EspecialidadeController::class, 'delete'])->name('especialidade.delete');
 });
 
 require __DIR__.'/auth.php';

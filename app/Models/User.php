@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\UserTypes;
+use App\Enums\UserTypes;
 use DragonCode\Contracts\Cashier\Auth\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

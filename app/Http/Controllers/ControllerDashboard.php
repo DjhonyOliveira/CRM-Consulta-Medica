@@ -6,7 +6,7 @@ use App\Models\ModelConsulta;
 use App\Models\ModelEspecialidade;
 use App\Models\ModelHorariosDisponiveis;
 use App\Models\User;
-use App\UserTypes;
+use App\Enums\UserTypes;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
