@@ -14,6 +14,7 @@ class Input extends ComponentBase
     private int $minLength;
     private bool $readOnly;
     private bool $required;
+    private string $label;
 
     function __construct()
     {
@@ -111,7 +112,7 @@ class Input extends ComponentBase
     /**
      * Seta o tamanho máximo do input
      * @return self
-     */ 
+     */
     public function setMaxLength(int $maxLength): self
     {
         $this->maxLength = $maxLength;
@@ -175,6 +176,27 @@ class Input extends ComponentBase
     public function setRequired(bool $required): self
     {
         $this->required = $required;
+
+        return $this;
+    }
+
+    /**
+     * Retorna o texto da label do input
+     * @return string
+     */ 
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * Seta a label do componente
+     * @param string $label
+     * @return self
+     */ 
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }

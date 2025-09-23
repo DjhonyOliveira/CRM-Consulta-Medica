@@ -24,16 +24,38 @@ enum EnumRotina: int
         };
     }
 
-    public function screenClass(): string
+    /**
+     * Retorna a view solicitada pelo sistema
+     * @return string
+     */
+    public function screenClass(bool $isManutencao = false): string
+    {
+        if($isManutencao){
+            return $this->getViewManutencao();
+        }
+
+        return $this->getViewConsulta();
+    }
+
+    /**
+     * Retorna a view de consulta do sistema
+     * @return string
+     */
+    private function getViewConsulta()
     {
         return match($this){
-            self::dashboard      => \App\View\ViewDashboard::class,
-            self::usuarios       => \App\View\ViewUsuario::class,
-            self::pacientes      => \App\View\ViewPacientes::class,
-            self::medicos        => \App\View\ViewMedicos::class,
-            self::especialidades => \App\View\ViewEspecialidades::class,
-            self::consulta       => \App\View\ViewConsultas::class
+            self::dashboard      => \App\View\ViewConsulta\ViewConsultaDashboard::class,
+            self::usuarios       => \App\View\ViewConsulta\ViewConsultaUsuario::class,
+            self::pacientes      => \App\View\ViewConsulta\ViewConsultaPacientes::class,
+            self::medicos        => \App\View\ViewConsulta\ViewConsultaMedicos::class,
+            self::especialidades => \App\View\ViewConsulta\ViewConsultaEspecialidades::class,
+            self::consulta       => \App\View\ViewConsulta\ViewConsultaConsultas::class
         };
+    }
+
+    private function getViewManutencao(): string
+    {
+        return '';
     }
 
     public static function fromCode($code): EnumRotina|null
