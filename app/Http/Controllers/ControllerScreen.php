@@ -23,7 +23,7 @@ class ControllerScreen extends Controller
     {
         $codigoRotina  = (int) $request->get("rotina");
         $acao          = (int) $request->get("acao");
-        $bIsManutencao = $acao == EnumAcao::index->value ? false : true;
+        $bIsManutencao = $acao == EnumAcao::index->value;
 
         $rotina = EnumRotina::fromCode($codigoRotina);
 

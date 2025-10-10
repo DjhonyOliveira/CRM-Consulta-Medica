@@ -1,3 +1,9 @@
+/**
+ * Função que controla o comportamento de movimentação do modal em tela
+ * @param {string} modalId 
+ * @param {string} headerId 
+ * @returns {void}
+ */
 function modal(modalId = 'draggableModal', headerId = 'modalHeader') {
     const modal = document.getElementById(modalId);
     const header = document.getElementById(headerId);

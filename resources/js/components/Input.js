@@ -72,6 +72,10 @@ class Input extends BaseComponent {
         return this.label;
     }
 
+    /**
+     * Retorna o html do componente montado com base nos parametros passados
+     * @returns {string}
+     */
     render() {
         return `
             <div class="form-group">
