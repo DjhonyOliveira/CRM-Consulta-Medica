@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use App\UserTypes;
+use App\Enums\UserTypes;
 use Livewire\Component;
 
 class ModalTablePacientes extends Component

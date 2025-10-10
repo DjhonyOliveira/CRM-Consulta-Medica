@@ -2,9 +2,7 @@
 
 namespace App\Livewire;
 
-use App\EnumAcao;
-use App\Livewire\Components\Input;
-use App\Livewire\Components\ModalBase;
+use App\Enums\EnumAcao;
 use App\Models\ModelEspecialidade;
 use Livewire\Component;
 
@@ -15,68 +13,89 @@ class ModalEspecialidades extends Component
         "atualizacaoRealizada" => "resetarEstado"
     ];
 
-    public $modal;
-    private array $especialidade;
+    public $showModal;
+    public $actionName;
     public $action;
-    public $showModal = true;
+    public $method;
+
+    public $especialidade;
 
     public function render()
     {
-        return view('livewire.modal-especialidades', [
-            "modal" => $this->getModal()
-        ]);
+        return view('livewire.modal-especialidades');
     }
 
-    public function getModal()
+    public function openModal()
     {
-        if(!isset($modal)){
-            $this->modal = new ModalBase();
-        }
-
-        return $this->modal;
+        $this->showModal = true;
+        $this->dispatch('openModal');
     }
 
-    private function setModal(ModalBase $oModalBase)
+    public function closeModal()
     {
-        $this->modal = $oModalBase;
-
-        return $this;
+        $this->showModal = false;
     }
 
     public function openModalFromJson(array $data)
     {
-        $iAcao = $data['acao'];
-        $this->action = $iAcao;
-
-        $oCampoInput = new Input();
-        $oCampoInput->setLabel('Especialidade');
-        $oCampoInput->setType('text');
-        $oCampoInput->setName('especialidade');
-        
-        $oModalBase = new ModalBase();
-        $oModalBase->setFormAction('especialidade.view');
-        $oModalBase->setMethod('POST');
-        $oModalBase->setShow(true);
+        $iAcao = $data['acao'];  
 
         switch($iAcao){
             case EnumAcao::create->value:
-                $oModalBase->setTitle('Adicionar Especialidade');
-                $oModalBase->setAction($iAcao);
-
+                $this->add();
                 break;
             case EnumAcao::update->value:
+                $this->update($data);
                 break;
             case EnumAcao::delete->value:
+                $this->delete($data);
                 break;
             case EnumAcao::view->value:
+                $this->view($data);
                 break;
         }
+    }
 
-        $oModalBase->setFields([
-            $oCampoInput->render()
-        ]);
+    private function add()
+    {
+        $this->openModal();
 
-        $this->setModal($oModalBase);
+        $this->actionName = 'Adicionar';
+        $this->action     = EnumAcao::create->value;
+        $this->method     = 'POST';
+    }
+
+    private function update($data)
+    {
+        $this->openModal();
+
+        $this->action     = EnumAcao::update->value;
+        $this->actionName = 'Atualizar';
+        $this->method     = 'PUT';
+
+        $this->setEspecialidadeById($data);
+    }
+
+    private function delete($data)
+    {
+        $this->openModal();
+
+        $this->actionName = 'Deletar';
+        $this->action     = EnumAcao::delete->value;
+        $this->method     = 'delete';
+
+        $this->setEspecialidadeById($data);
+    }
+
+    private function view($data)
+    {
+        $this->openModal();
+
+        $this->action     = EnumAcao::view->value;
+        $this->actionName = 'Visualizar';
+        $this->method     = 'get';
+
+        $this->setEspecialidadeById($data);
     }
 
     private function setEspecialidadeById($data)

@@ -13,16 +13,16 @@ class TableConsultas extends Component
 
     public function render()
     {
-        if(auth()->user()->isMedico()){
+        if(getUsuarioLogado()->isMedico()){
             return view('livewire.table-consultas', [
-                'consultas' => ModelConsulta::where('medico_id', auth()->user()->id)
+                'consultas' => ModelConsulta::where('medico_id', getUsuarioLogado()->id)
                                             ->with(['paciente', 'medico', 'especialidade', 'horario'])->get(),
             ]);
         }
 
-        if(auth()->user()->isPaciente()){
+        if(getUsuarioLogado()->isPaciente()){
             return view('livewire.table-consultas', [
-                'consultas' => ModelConsulta::where('paciente_id', auth()->user()->id)
+                'consultas' => ModelConsulta::where('paciente_id', getUsuarioLogado()->id)
                                             ->with(['paciente', 'medico', 'especialidade', 'horario'])->get(),
             ]);
         }

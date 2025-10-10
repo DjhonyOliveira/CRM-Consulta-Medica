@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\EnumAcao;
-use App\EnumEspecialidade;
+use App\Enums\EnumAcao;
+use App\Enums\EnumEspecialidade;
 use Livewire\Component;
 
 class ModalEspecialidadeMedico extends Component

@@ -1,6 +1,6 @@
 <?php
 
-use App\EnumConsulta;
+use App\Enums\EnumConsulta;
 
 ?>
 
