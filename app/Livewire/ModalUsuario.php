@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use App\EnumAcao;
+use App\Enums\EnumAcao;
 use App\Models\User;
-use App\UserTypes;
+use App\Enums\UserTypes;
 use Livewire\Component;
 
 /**

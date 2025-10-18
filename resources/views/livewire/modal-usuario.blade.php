@@ -1,7 +1,7 @@
 <?php
 
-    use App\EnumAcao;
-    use App\UserTypes;
+use App\Enums\EnumAcao;
+use App\Enums\UserTypes;
     
 ?>
 

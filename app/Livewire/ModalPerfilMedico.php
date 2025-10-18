@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\EnumAcao;
+use App\Enums\EnumAcao;
 use App\Models\ModelHorariosDisponiveis;
 use App\Models\User;
 use Carbon\Carbon;
@@ -104,7 +104,7 @@ class ModalPerfilMedico extends Component
 
     private function setaEspecialidadesEspecificas()
     {
-        $medico          = User::find(auth()->user()->id)->especialidades;
+        $medico          = User::find(getUsuarioLogado()->id)->especialidades;
         $aEspecialidades = [];
 
         foreach($medico as $especialidade){

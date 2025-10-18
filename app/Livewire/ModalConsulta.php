@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\EnumAcao;
+use App\Enums\EnumAcao;
 use App\Models\ModelConsulta;
 use App\Models\ModelHorariosDisponiveis;
 use App\Models\User;
@@ -27,7 +27,7 @@ class ModalConsulta extends Component
     public function render()
     {
         return view('livewire.modal-consulta', [
-            "medico" => User::find( auth()->user()->id)->especialidades
+            "medico" => User::find( getUsuarioLogado()->id)->especialidades
         ]);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\EnumAcao;
+use App\Enums\EnumAcao;
 
 ?>
 

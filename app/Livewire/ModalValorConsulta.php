@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\ModelValorConsulta;
 use Livewire\Component;
 use App\Models\User;
-use App\EnumAcao;
+use App\Enums\EnumAcao;
 
 class ModalValorConsulta extends Component
 {
@@ -102,7 +102,7 @@ class ModalValorConsulta extends Component
 
     private function setaEspecialidadesEspecificas()
     {
-        $medico          = User::find(auth()->user()->id)->especialidades;
+        $medico          = User::find(getUsuarioLogado()->id)->especialidades;
         $aEspecialidades = [];
 
         foreach($medico as $especialidade){
